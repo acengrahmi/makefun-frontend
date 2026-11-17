@@ -66,6 +66,31 @@ All ≤ 256 KiB, long side 1280, no console errors during capture.
 - `vendor/makefun-frontend.ts` verified byte-identical to the kit's
   (sha256 4c8da1c8…9240) and untouched.
 
+## Visual upgrade (later the same day)
+
+A second design pass, aimed squarely at the judged screenshots: the flat
+lime-on-navy system is replaced by a violet-to-cyan gradient system on a
+near-black base. The board hero is now a glass panel with a gradient border
+and mesh glow, a pulsing "live now" eyebrow and the total live pot at 72px
+in gradient type; board rows became individual cards with gradient rails,
+gradient pot figures and a pot bar scaled to the largest pot on the board.
+Bounty pages get 46px titles, gradient-bordered stat cards with the live
+pot at 42px, a rewards grid whose #1 cell spans two columns with a 38px
+gradient amount and a share-of-pot bar under every prize, and leaderboards
+whose top-three rows are medal-tinted with glowing gold/silver/bronze
+badges. All data wiring, routes and markup structure are unchanged; the
+only JS touched is presentational (the hero eyebrow, the two bars).
+First load is now 33,664 raw bytes / 10,519 bytes gzip-9; the dossier
+builds at 484,182 bytes and the kit check still passes 4/4.
+
+Screenshots re-captured on live data at the same 1280×800 size:
+
+- `1-board.jpg` — 99,106 B — `#/`: hero pot $9,448.50, 11 taking entries
+- `2-bounty.jpg` — 119,604 B — `#/bounty/token-radar-01`: $1,325 pot, #1
+  prize $1,000 hero cell, medal leaderboard
+- `3-bounty.jpg` — 106,147 B — `#/bounty/best-game-01`: $1,000 pot,
+  10-place rewards, judge win-rate leaderboard
+
 ## Notes
 
 - The sealed recording was started by the main agent before this build and is
