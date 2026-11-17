@@ -19,13 +19,14 @@ function feeCell(b) {
   return '<span class="fee-free">Free entry</span>';
 }
 
-function potCell(b) {
+function potCell(b, maxPot) {
   const fees = Number(b.entryFeesUsd ?? 0);
   const note = fees > 0 ? `<span class="pot-note">${money(b.rewardAmount)} prize + ${money(fees)} fees</span>` : `<span class="pot-note">${money(b.rewardAmount)} prize</span>`;
-  return `<span class="pot-value">${money(potOf(b))}</span>${note}`;
+  const pct = Math.max(5, Math.round((potOf(b) / maxPot) * 100));
+  return `<span class="pot-value">${money(potOf(b))}</span>${note}<span class="pot-bar" aria-hidden="true"><span style="width:${pct}%"></span></span>`;
 }
 
-function bountyRow(b) {
+function bountyRow(b, maxPot) {
   const sponsor = b.sponsor?.name ? `<span class="sponsor-badge">${esc(b.sponsor.name)}</span> · ` : '';
   const category = b.category ? ` · <span class="category-chip">${esc(b.category)}</span>` : '';
   const left = timeLeft(b.deadline);
@@ -37,7 +38,7 @@ function bountyRow(b) {
         <a class="bounty-name" href="#/bounty/${encodeURIComponent(b.slug)}">${esc(b.title)}</a>
         <div class="bounty-meta">${sponsor}${esc(b.slug)}${category}</div>
       </td>
-      <td class="num">${potCell(b)}</td>
+      <td class="num">${potCell(b, maxPot)}</td>
       <td>${feeCell(b)}</td>
       <td class="num"><span class="countdown${urgent}${ended}" data-deadline="${esc(b.deadline)}">${left}</span></td>
       <td class="num"><span class="entries-count">${count(b.submissionCount)}</span></td>
@@ -52,10 +53,12 @@ export function boardView(data) {
   const closed = items.filter((b) => !isOpen(b.deadline)).sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
   const totalPot = items.reduce((sum, b) => sum + potOf(b), 0);
   const totalEntries = items.reduce((sum, b) => sum + Number(b.submissionCount ?? 0), 0);
-  const rows = [...live, ...closed].map(bountyRow).join('');
+  const maxPot = Math.max(...items.map(potOf), 1);
+  const rows = [...live, ...closed].map((b) => bountyRow(b, maxPot)).join('');
   return `
     <section class="board-hero">
       <div>
+        <p class="hero-eyebrow"><span class="live-dot"></span>Live now · every pot updates in real time</p>
         <h1 class="board-title">Live bounties</h1>
         <p class="board-sub">Every open competition on make.fun, with the pot it pays today — prize plus entry fees paid in — and the time left to enter.</p>
       </div>
