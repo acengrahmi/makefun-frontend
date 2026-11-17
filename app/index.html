@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A fast, read-only make.fun frontend: the live bounty board, every bounty's page and leaderboard, and public builder profiles.">
+<title>make.fun bounties</title>
+<link rel="stylesheet" href="style.css">
+<script type="module" src="main.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#app">Skip to content</a>
+<header id="site-header">
+  <a class="wordmark" href="#/" aria-label="make.fun bounties, home">make<span class="wordmark-dot">.</span>fun</a>
+  <nav id="site-nav" aria-label="Surfaces">
+    <a href="#/">Bounty board</a>
+    <a href="#/bounty/makefun-frontend-01">This bounty</a>
+  </nav>
+  <form id="handle-lookup" role="search">
+    <label class="visually-hidden" for="handle-input">Builder handle</label>
+    <input id="handle-input" name="handle" type="search" placeholder="Find a builder, e.g. acengrahmi" autocomplete="off" spellcheck="false">
+    <button id="handle-go" type="submit">Profile</button>
+  </form>
+</header>
+<main id="app" tabindex="-1"></main>
+<footer id="site-footer">
+  <p>Read-only client for make.fun's public API. Pots, fees and countdowns are live; nothing here signs in or writes.</p>
+</footer>
+</body>
+</html>
