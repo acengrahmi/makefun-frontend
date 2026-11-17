@@ -26,15 +26,19 @@ function rewardsPanel(b) {
     : Object.entries(b.rewards ?? {}).map(([place, amount]) => ({ place: Number(place), amountUsd: amount, baseUsd: amount, feeShareUsd: '0' }));
   if (!now.length) return '';
   const shown = now.slice(0, 24);
+  const pot = potOf(b) || 1;
+  const shareBar = (amount) => `<span class="reward-bar" aria-hidden="true"><span style="width:${Math.max(4, Math.round((Number(amount ?? 0) / pot) * 100))}%"></span></span>`;
   const cells = shown.map((r) => `
-    <div class="reward-cell${r.place <= 3 ? ' reward-cell-top' : ''}">
+    <div class="reward-cell${r.place <= 3 ? ' reward-cell-top' : ''}${r.place === 1 ? ' reward-cell-first' : ''}">
       <span class="reward-place">#${r.place}</span>
       <span class="reward-amount">${money(r.amountUsd)}</span>
+      ${shareBar(r.amountUsd)}
       ${Number(r.feeShareUsd ?? 0) > 0 ? `<span class="reward-fee-share">incl. ${money(r.feeShareUsd)} fees</span>` : ''}
     </div>`).join('') + (now.length > shown.length ? `
     <div class="reward-cell">
       <span class="reward-place">Places ${shown.length + 1}–${now.length}</span>
       <span class="reward-amount">${money(now.slice(shown.length).reduce((sum, r) => sum + Number(r.amountUsd ?? 0), 0))}</span>
+      ${shareBar(now.slice(shown.length).reduce((sum, r) => sum + Number(r.amountUsd ?? 0), 0))}
       <span class="reward-fee-share">shared between them</span>
     </div>` : '');
   return `
